@@ -49,8 +49,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         time = FRAMES * 20;
 
-        targetCount = 2;
-
         evaluate = true;
 
         this.username = username;
@@ -60,9 +58,19 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTypeface(Typeface.SANS_SERIF);
         paint.setAntiAlias(true);
 
-        targets = new Target(context, targetCount, screenX, screenY);
-
         sharedPreferences = context.getSharedPreferences("DATA_GELBCHEN", Context.MODE_PRIVATE);
+
+        int level = sharedPreferences.getInt("level", 1);
+
+        if(level==1) {
+            targetCount = 2;
+        } else if(level==2) {
+            targetCount = 3;
+        } else if(level==3) {
+            targetCount = 5;
+        }
+
+        targets = new Target(context, targetCount, screenX, screenY, level);
         highScore[0] = sharedPreferences.getInt("score0", 0);
         highScore[1] = sharedPreferences.getInt("score1", 0);
         highScore[2] = sharedPreferences.getInt("score2", 0);

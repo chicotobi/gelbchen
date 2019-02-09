@@ -7,11 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences sp;
     String username;
+    int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         username = sp.getString("username", "Myself");
         EditText editText = findViewById(R.id.name);
         editText.setText(username);
+        level = sp.getInt("level",1);
     }
 
     @Override
@@ -28,8 +34,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText editText = findViewById(R.id.name);
         username = editText.getText().toString();
 
+        RadioGroup radioGroup = findViewById(R.id.radioGroup2);
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = findViewById(selectedId);
+        String text = (String) radioButton.getText();
+        if (text.equals("Easy")) {
+            level = 1;
+        } else if (text.equals("Moderate")) {
+            level = 2;
+        } else if (text.equals("Hard")) {
+            level = 3;
+        }
+
         SharedPreferences.Editor e = sp.edit();
         e.putString("username",username);
+        e.putInt("level",level);
         e.apply();
 
         Intent intent = new Intent(this, GameActivity.class);

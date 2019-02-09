@@ -28,21 +28,29 @@ public class Target {
     private Type type[];
 
     int FRAMES = 60;
+    int nx;
+    int ny;
 
     private int targetCount;
 
-    public Target(Context context, int targetCount, int screenX, int screenY) {
+    public Target(Context context, int targetCount, int screenX, int screenY, int level) {
 
-        gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
-        enemy = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
+        this.targetCount = targetCount;
+        nx = level + 2;
+        ny = level + 3;
+
+        Bitmap orig_gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
+        Bitmap orig_enemy = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
+
+        shiftX = (int) (screenX / (float)nx);
+        shiftY = (int) ((screenY - 50) / (float)ny);
+
+        gelbchen = Bitmap.createScaledBitmap(orig_gelbchen, shiftX, shiftY, false);
+        enemy = Bitmap.createScaledBitmap(orig_enemy, shiftX, shiftY, false);
 
         int bitmapX = gelbchen.getWidth();
         int bitmapY = gelbchen.getHeight();
 
-        this.targetCount = targetCount;
-
-        shiftX = (int) (screenX / 3.);
-        shiftY = (int) ((screenY - 50) / 4.);
         offsetX = (int) ((shiftX - bitmapX) / 2.);
         offsetY = (int) ((shiftY - bitmapY) / 2. + 50);
 
@@ -96,8 +104,8 @@ public class Target {
         int newx,newy;
         boolean collision;
         do {
-            newx = offsetX + generator.nextInt(3) * shiftX;
-            newy = offsetY + generator.nextInt(4) * shiftY;
+            newx = offsetX + generator.nextInt(nx) * shiftX;
+            newy = offsetY + generator.nextInt(ny) * shiftY;
             collision = false;
             for(int j=0;j<x.length;j++) {
                 if(newx == x[j] && newy == y[j]) {
