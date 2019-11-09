@@ -36,6 +36,7 @@ public class Target {
 
     SoundPool soundPool;
     int good_sound;
+    int bad_sound;
 
     private int targetCount;
 
@@ -48,6 +49,8 @@ public class Target {
 
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         good_sound = soundPool.load(this.context, R.raw.sound_1, 1);
+        bad_sound = soundPool.load(this.context, R.raw.sound_2, 1);
+
 
         Bitmap orig_gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
         Bitmap orig_enemy = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
@@ -139,6 +142,8 @@ public class Target {
 
             } else {
                 value = -10;
+                soundPool.play(bad_sound, 1, 1, 0, 0, 1);
+
             }
             reset(i);
         }
