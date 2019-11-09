@@ -3,6 +3,8 @@ package com.hofmannt.gelbchen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 import java.util.Random;
 
@@ -26,18 +28,26 @@ public class Target {
     private int shiftY;
 
     private Type type[];
+    Context context;
 
     int FRAMES = 60;
     int nx;
     int ny;
+
+    SoundPool soundPool;
+    int good_sound;
 
     private int targetCount;
 
     public Target(Context context, int targetCount, int screenX, int screenY, int level) {
 
         this.targetCount = targetCount;
+        this.context = context;
         nx = level + 2;
         ny = level + 3;
+
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        good_sound = soundPool.load(this.context, R.raw.sound_1, 1);
 
         Bitmap orig_gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
         Bitmap orig_enemy = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
@@ -122,6 +132,11 @@ public class Target {
         if(x[i] < xx & xx < x[i]+bitmap[i].getWidth() & y[i] < yy & yy < y[i]+bitmap[i].getHeight()) {
             if(type[i] == Type.Gelbchen) {
                 value =  1;
+
+                soundPool.play(good_sound, 1, 1, 0, 0, 1);
+//                soundPool.release();
+//                soundPool = null;
+
             } else {
                 value = -10;
             }
