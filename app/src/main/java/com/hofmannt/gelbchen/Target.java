@@ -33,13 +33,16 @@ public class Target {
 
     private int targetCount;
 
-    public Target(Context context, int targetCount, int screenX, int screenY, int level) {
+    public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean eco) {
 
         this.targetCount = targetCount;
         nx = level + 2;
         ny = level + 3;
 
         Bitmap orig_gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
+        if(eco) {
+            orig_gelbchen = BitmapFactory.decodeResource(context.getResources(), R.drawable.trash);
+        }
         Bitmap orig_enemy = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
 
         shiftX = (int) (screenX / (float)nx);

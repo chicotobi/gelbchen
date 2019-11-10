@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
 
+import static java.lang.Boolean.FALSE;
+
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
@@ -29,13 +31,14 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("name");
+        Boolean eco = intent.getBooleanExtra("eco", FALSE);
 
         Display display = getWindowManager().getDefaultDisplay();
 
         Point size = new Point();
         display.getSize(size);
 
-        gameView = new GameView(this, size.x, size.y, username);
+        gameView = new GameView(this, size.x, size.y, username, eco);
 
         setContentView(gameView);
     }

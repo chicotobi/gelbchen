@@ -39,7 +39,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     int FRAMES = 60;
 
-    public GameView(Context context, int screenX, int screenY, String username) {
+    public GameView(Context context, int screenX, int screenY, String username, Boolean eco) {
         super(context);
 
         this.context = context;
@@ -70,7 +70,7 @@ public class GameView extends SurfaceView implements Runnable {
             targetCount = 5;
         }
 
-        targets = new Target(context, targetCount, screenX, screenY, level);
+        targets = new Target(context, targetCount, screenX, screenY, level, eco);
         highScore[0] = sharedPreferences.getInt("score0", 0);
         highScore[1] = sharedPreferences.getInt("score1", 0);
         highScore[2] = sharedPreferences.getInt("score2", 0);
