@@ -3,9 +3,12 @@ package com.hofmannt.gelbchen;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -15,6 +18,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     volatile boolean playing;
     private Thread gameThread = null;
+
+    private Bitmap background;
 
     private Paint paint;
     private Canvas canvas;
@@ -38,9 +43,11 @@ public class GameView extends SurfaceView implements Runnable {
     SharedPreferences sharedPreferences;
 
     int FRAMES = 60;
+    boolean eco;
 
-    public GameView(Context context, int screenX, int screenY, String username, Boolean eco) {
+    public GameView(Context context, int screenX, int screenY, String username, Boolean eco_) {
         super(context);
+        eco = eco_;
 
         this.context = context;
 
@@ -69,6 +76,19 @@ public class GameView extends SurfaceView implements Runnable {
         } else if(level==3) {
             targetCount = 5;
         }
+
+        if(eco) {
+            if(level==1) {
+                background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_forest);
+            } else if(level==2) {
+                background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_beach);
+            } else if(level==3) {
+                background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_city);
+            }
+        } else {
+            background = Bitmap.createBitmap(screenX, screenY, Bitmap.Config.ARGB_8888);
+        }
+        background = Bitmap.createScaledBitmap(background, screenX, screenY,false);
 
         targets = new Target(context, targetCount, screenX, screenY, level, eco);
         highScore[0] = sharedPreferences.getInt("score0", 0);
@@ -130,8 +150,14 @@ public class GameView extends SurfaceView implements Runnable {
     private void draw() {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
-            canvas.drawColor(Color.WHITE);
             if (time > 0) {
+                if(eco) {
+                    canvas.drawBitmap(background,0,0,paint);
+                    paint.setStyle(Paint.Style.FILL);
+                    paint.setColor(Color.WHITE);
+                    canvas.drawRect(0,0,500,50,paint);
+                    paint.setColor(Color.BLACK);
+                }
                 for (int i = 0; i < targetCount; i++) {
                     canvas.drawBitmap(
                             targets.getBitmap(i),
@@ -153,7 +179,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void control() {
         try {
-            gameThread.sleep(17);
+            gameThread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
