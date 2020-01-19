@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -21,6 +22,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Bitmap background;
 
+    private Bitmap trashbin;
+    private int trashbin_x;
+    private int trashbin_y;
+
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
@@ -31,6 +36,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int time;
     private int points;
 
+    private int wiggle_trashbin;
+
     private String username;
 
     boolean evaluate;
@@ -38,16 +45,18 @@ public class GameView extends SurfaceView implements Runnable {
     String names[] = new String[5];
     int highScore[] = new int[5];
 
+
     Context context;
 
     SharedPreferences sharedPreferences;
 
     int FRAMES = 60;
-    boolean eco;
+    boolean classic;
+    int shiftX, shiftY;
 
-    public GameView(Context context, int screenX, int screenY, String username, Boolean eco_) {
+    public GameView(Context context, int screenX, int screenY, String username, Boolean classic_) {
         super(context);
-        eco = eco_;
+        classic = classic_;
 
         this.context = context;
 
@@ -65,6 +74,8 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTypeface(Typeface.SANS_SERIF);
         paint.setAntiAlias(true);
 
+        wiggle_trashbin = 0;
+
         sharedPreferences = context.getSharedPreferences("DATA_GELBCHEN", Context.MODE_PRIVATE);
 
         int level = sharedPreferences.getInt("level", 1);
@@ -77,7 +88,9 @@ public class GameView extends SurfaceView implements Runnable {
             targetCount = 5;
         }
 
-        if(eco) {
+        if(classic) {
+            background = Bitmap.createBitmap(screenX, screenY, Bitmap.Config.ARGB_8888);
+        } else {
             if(level==1) {
                 background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_forest);
             } else if(level==2) {
@@ -85,12 +98,10 @@ public class GameView extends SurfaceView implements Runnable {
             } else if(level==3) {
                 background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_city);
             }
-        } else {
-            background = Bitmap.createBitmap(screenX, screenY, Bitmap.Config.ARGB_8888);
         }
         background = Bitmap.createScaledBitmap(background, screenX, screenY,false);
 
-        targets = new Target(context, targetCount, screenX, screenY, level, eco);
+        targets = new Target(context, targetCount, screenX, screenY, level, classic);
         highScore[0] = sharedPreferences.getInt("score0", 0);
         highScore[1] = sharedPreferences.getInt("score1", 0);
         highScore[2] = sharedPreferences.getInt("score2", 0);
@@ -101,6 +112,15 @@ public class GameView extends SurfaceView implements Runnable {
         names[2] = sharedPreferences.getString("name2", "");
         names[3] = sharedPreferences.getString("name3", "");
         names[4] = sharedPreferences.getString("name4", "");
+
+        // Set values for trashbin
+        trashbin = BitmapFactory.decodeResource(context.getResources(), R.drawable.bin);
+
+        shiftX = (int) (screenX / (float)(level+2));
+        shiftY = (int) ((screenY - 50) / (float)(level+3));
+        trashbin = Bitmap.createScaledBitmap(trashbin, shiftX, shiftY,false);
+        trashbin_x = 0;
+        trashbin_y = 50 + (level+2) * shiftY;
     }
 
     @Override
@@ -151,7 +171,9 @@ public class GameView extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
             if (time > 0) {
-                if(eco) {
+                if(classic) {
+                    canvas.drawColor(Color.WHITE);
+                } else {
                     canvas.drawBitmap(background,0,0,paint);
                     paint.setStyle(Paint.Style.FILL);
                     paint.setColor(Color.WHITE);
@@ -168,6 +190,20 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 canvas.drawText("Name:" + username + "  Score: " + points + "  Time: " + time/FRAMES, 0, 40, paint);
                 canvas.drawLine(0, 50, 500, 50, paint);
+                if(wiggle_trashbin>0) {
+                    wiggle_trashbin--;
+                    Matrix matrix = new Matrix();
+
+                    float degrees[] = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+
+                    matrix.setTranslate(trashbin.getWidth(), trashbin.getHeight());
+                    matrix.postRotate(degrees[wiggle_trashbin], trashbin.getWidth(), trashbin.getHeight());
+                    Bitmap rotatedTrashbin = Bitmap.createBitmap(trashbin, 0, 0, trashbin.getWidth(), trashbin.getHeight(), matrix, true);
+                    Bitmap rescaledTrashbin = Bitmap.createScaledBitmap(rotatedTrashbin, shiftX, shiftY,false);
+                    canvas.drawBitmap(rescaledTrashbin, trashbin_x, trashbin_y, paint);
+                } else {
+                    canvas.drawBitmap(trashbin, trashbin_x, trashbin_y, paint);
+                }
             } else {
                 paint.setTextSize(60);
                 paint.setTextAlign(Paint.Align.CENTER);
@@ -208,8 +244,12 @@ public class GameView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_UP:
                 float x = motionEvent.getX();
                 float y = motionEvent.getY();
+                int old_points = points;
                 for (int i = 0; i < targetCount; i++) {
                     points += targets.checkHit(i, x, y);
+                }
+                if(points>old_points) {
+                    wiggle_trashbin = 10;
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
@@ -217,5 +257,4 @@ public class GameView extends SurfaceView implements Runnable {
         }
         return true;
     }
-
 }

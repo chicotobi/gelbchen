@@ -11,8 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
-import org.w3c.dom.Text;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     SharedPreferences sp;
@@ -53,12 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         e.apply();
 
         Switch myswitch;
-        myswitch = findViewById(R.id.ecoswitch);
-        Boolean eco = myswitch.isChecked();
+        myswitch = findViewById(R.id.classic_switch);
+        Boolean classic = myswitch.isChecked();
 
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("name", username);
-        intent.putExtra("eco", eco);
+        intent.putExtra("classic", classic);
         startActivity(intent);
     }
 

@@ -39,7 +39,7 @@ public class Target {
 
     private int targetCount;
 
-    public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean eco) {
+    public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean classic) {
 
         this.targetCount = targetCount;
         this.context = context;
@@ -55,7 +55,7 @@ public class Target {
         Bitmap p2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
         Bitmap p3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
         Bitmap m1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
-        if(eco) {
+        if(!classic) {
             if(level==1) {
                 p1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.forest_trash_1);
                 p2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.forest_trash_2);
@@ -145,11 +145,16 @@ public class Target {
         int newx,newy;
         boolean collision;
         do {
-            newx = offsetX + generator.nextInt(nx) * shiftX;
-            newy = offsetY + generator.nextInt(ny) * shiftY;
+            int idx_x = generator.nextInt(nx);
+            int idx_y = generator.nextInt(ny);
+            newx = offsetX + idx_x * shiftX;
+            newy = offsetY + idx_y * shiftY;
             collision = false;
             for(int j=0;j<x.length;j++) {
                 if(newx == x[j] && newy == y[j]) {
+                    collision = true;
+                }
+                if(idx_x == 0 && idx_y == ny - 1) {
                     collision = true;
                 }
             }

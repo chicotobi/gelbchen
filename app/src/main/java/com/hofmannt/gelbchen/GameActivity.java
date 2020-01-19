@@ -31,14 +31,14 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("name");
-        Boolean eco = intent.getBooleanExtra("eco", FALSE);
+        Boolean classic = intent.getBooleanExtra("classic", FALSE);
 
         Display display = getWindowManager().getDefaultDisplay();
 
         Point size = new Point();
         display.getSize(size);
 
-        gameView = new GameView(this, size.x, size.y, username, eco);
+        gameView = new GameView(this, size.x, size.y, username, classic);
 
         setContentView(gameView);
     }
