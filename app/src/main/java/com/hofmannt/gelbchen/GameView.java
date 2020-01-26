@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -22,9 +21,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Bitmap background;
 
-    private Bitmap trashbin;
-    private int trashbin_x;
-    private int trashbin_y;
+    private Bitmap bin_green;
+    private Bitmap bin_red;
+    private int bin_x;
+    private int bin_y;
 
     private Paint paint;
     private Canvas canvas;
@@ -36,7 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int time;
     private int points;
 
-    private int wiggle_trashbin;
+    private int bin_wigglecounter;
 
     private String username;
 
@@ -74,7 +74,7 @@ public class GameView extends SurfaceView implements Runnable {
         paint.setTypeface(Typeface.SANS_SERIF);
         paint.setAntiAlias(true);
 
-        wiggle_trashbin = 0;
+        bin_wigglecounter = 0;
 
         sharedPreferences = context.getSharedPreferences("DATA_GELBCHEN", Context.MODE_PRIVATE);
 
@@ -113,14 +113,16 @@ public class GameView extends SurfaceView implements Runnable {
         names[3] = sharedPreferences.getString("name3", "");
         names[4] = sharedPreferences.getString("name4", "");
 
-        // Set values for trashbin
-        trashbin = BitmapFactory.decodeResource(context.getResources(), R.drawable.bin);
+        // Set values for bin_green
+        bin_green = BitmapFactory.decodeResource(context.getResources(), R.drawable.bin_green);
+        bin_red = BitmapFactory.decodeResource(context.getResources(), R.drawable.bin_red);
 
         shiftX = (int) (screenX / (float)(level+2));
         shiftY = (int) ((screenY - 50) / (float)(level+3));
-        trashbin = Bitmap.createScaledBitmap(trashbin, shiftX, shiftY,false);
-        trashbin_x = 0;
-        trashbin_y = 50 + (level+2) * shiftY;
+        bin_green = Bitmap.createScaledBitmap(bin_green, shiftX, shiftY,false);
+        bin_red = Bitmap.createScaledBitmap(bin_red, shiftX, shiftY,false);
+        bin_x = 0;
+        bin_y = 50 + (level+2) * shiftY;
     }
 
     @Override
@@ -190,19 +192,30 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 canvas.drawText("Name:" + username + "  Score: " + points + "  Time: " + time/FRAMES, 0, 40, paint);
                 canvas.drawLine(0, 50, 500, 50, paint);
-                if(wiggle_trashbin>0) {
-                    wiggle_trashbin--;
+                if(bin_wigglecounter > 0) {
+                    bin_wigglecounter--;
                     Matrix matrix = new Matrix();
 
                     float degrees[] = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
 
-                    matrix.setTranslate(trashbin.getWidth(), trashbin.getHeight());
-                    matrix.postRotate(degrees[wiggle_trashbin], trashbin.getWidth(), trashbin.getHeight());
-                    Bitmap rotatedTrashbin = Bitmap.createBitmap(trashbin, 0, 0, trashbin.getWidth(), trashbin.getHeight(), matrix, true);
+                    matrix.setTranslate(bin_green.getWidth(), bin_green.getHeight());
+                    matrix.postRotate(degrees[bin_wigglecounter], bin_green.getWidth(), bin_green.getHeight());
+                    Bitmap rotatedTrashbin = Bitmap.createBitmap(bin_green, 0, 0, bin_green.getWidth(), bin_green.getHeight(), matrix, true);
                     Bitmap rescaledTrashbin = Bitmap.createScaledBitmap(rotatedTrashbin, shiftX, shiftY,false);
-                    canvas.drawBitmap(rescaledTrashbin, trashbin_x, trashbin_y, paint);
+                    canvas.drawBitmap(rescaledTrashbin, bin_x, bin_y, paint);
+                } else if (bin_wigglecounter < 0) {
+                    bin_wigglecounter++;
+                    Matrix matrix = new Matrix();
+
+                    float degrees[] = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+
+                    matrix.setTranslate(bin_red.getWidth(), bin_red.getHeight());
+                    matrix.postRotate(degrees[-bin_wigglecounter], bin_red.getWidth(), bin_red.getHeight());
+                    Bitmap rotatedTrashbin = Bitmap.createBitmap(bin_red, 0, 0, bin_red.getWidth(), bin_red.getHeight(), matrix, true);
+                    Bitmap rescaledTrashbin = Bitmap.createScaledBitmap(rotatedTrashbin, shiftX, shiftY,false);
+                    canvas.drawBitmap(rescaledTrashbin, bin_x, bin_y, paint);
                 } else {
-                    canvas.drawBitmap(trashbin, trashbin_x, trashbin_y, paint);
+                    canvas.drawBitmap(bin_green, bin_x, bin_y, paint);
                 }
             } else {
                 paint.setTextSize(60);
@@ -249,7 +262,9 @@ public class GameView extends SurfaceView implements Runnable {
                     points += targets.checkHit(i, x, y);
                 }
                 if(points>old_points) {
-                    wiggle_trashbin = 10;
+                    bin_wigglecounter = 10;
+                } else if(points < old_points) {
+                    bin_wigglecounter = -10;
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
