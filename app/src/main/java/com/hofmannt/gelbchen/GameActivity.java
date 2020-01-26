@@ -2,6 +2,7 @@ package com.hofmannt.gelbchen;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -22,6 +23,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         gameView.resume();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
     }
 
     @Override
