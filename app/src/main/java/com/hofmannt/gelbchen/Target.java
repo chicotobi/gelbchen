@@ -14,10 +14,10 @@ enum Type {
 
 public class Target {
 
-    private Bitmap bitmap[];
-    private int x[];
-    private int y[];
-    private float lifetime[];
+    private Bitmap[] bitmap;
+    private int[] x;
+    private int[] y;
+    private float[] lifetime;
 
     private Bitmap plus1,plus2,plus3,minus1;
 
@@ -26,7 +26,7 @@ public class Target {
     private int shiftX;
     private int shiftY;
 
-    private Type type[];
+    private Type[] type;
     Context context;
 
     int FRAMES = 60;

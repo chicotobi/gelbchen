@@ -42,8 +42,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     boolean evaluate;
 
-    String names[] = new String[5];
-    int highScore[] = new int[5];
+    String[] names = new String[5];
+    int[] highScore = new int[5];
 
 
     Context context;
@@ -196,7 +196,7 @@ public class GameView extends SurfaceView implements Runnable {
                     bin_wigglecounter--;
                     Matrix matrix = new Matrix();
 
-                    float degrees[] = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+                    float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
 
                     matrix.setTranslate(bin_green.getWidth(), bin_green.getHeight());
                     matrix.postRotate(degrees[bin_wigglecounter], bin_green.getWidth(), bin_green.getHeight());
@@ -207,7 +207,7 @@ public class GameView extends SurfaceView implements Runnable {
                     bin_wigglecounter++;
                     Matrix matrix = new Matrix();
 
-                    float degrees[] = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+                    float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
 
                     matrix.setTranslate(bin_red.getWidth(), bin_red.getHeight());
                     matrix.postRotate(degrees[-bin_wigglecounter], bin_red.getWidth(), bin_red.getHeight());
@@ -228,7 +228,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void control() {
         try {
-            gameThread.sleep(1);
+            Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
