@@ -12,43 +12,43 @@ enum Type {
     Gelbchen, Enemy
 }
 
-public class Target {
+class Target {
 
-    private Bitmap[] bitmap;
-    private int[] x;
-    private int[] y;
-    private float[] lifetime;
+    private final Bitmap[] bitmap;
+    private final int[] x;
+    private final int[] y;
+    private final float[] lifetime;
 
-    private Bitmap plus1,plus2,plus3,minus1;
+    private final Bitmap plus1;
+    private final Bitmap plus2;
+    private final Bitmap plus3;
+    private final Bitmap minus1;
 
-    private int offsetX;
-    private int offsetY;
-    private int shiftX;
-    private int shiftY;
+    private final int offsetX;
+    private final int offsetY;
+    private final int shiftX;
+    private final int shiftY;
 
-    private Type[] type;
-    Context context;
+    private final Type[] type;
 
-    int FRAMES = 60;
-    int nx;
-    int ny;
+    private final int nx;
+    private final int ny;
 
-    SoundPool soundPool;
-    int good_sound;
-    int bad_sound;
+    private final SoundPool soundPool;
+    private final int good_sound;
+    private final int bad_sound;
 
-    private int targetCount;
+    private final int targetCount;
 
     public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean classic) {
 
         this.targetCount = targetCount;
-        this.context = context;
         nx = level + 2;
         ny = level + 3;
 
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-        good_sound = soundPool.load(this.context, R.raw.sound_1, 1);
-        bad_sound = soundPool.load(this.context, R.raw.sound_2, 1);
+        good_sound = soundPool.load(context, R.raw.sound_1, 1);
+        bad_sound = soundPool.load(context, R.raw.sound_2, 1);
 
         Bitmap p1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_good);
         Bitmap p2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_good);
@@ -139,6 +139,7 @@ public class Target {
 
         Random generator = new Random();
         lifetime[i] =  minLifetime + (maxLifetime-minLifetime) * generator.nextFloat();
+        int FRAMES = 60;
         lifetime[i] *= FRAMES;
 
         int newx,newy;

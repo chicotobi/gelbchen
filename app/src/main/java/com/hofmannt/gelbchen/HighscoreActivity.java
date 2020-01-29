@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class HighscoreActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +20,23 @@ public class HighscoreActivity extends AppCompatActivity {
         updateTextFromSharedPreferences();
     }
 
-    public void updateTextFromSharedPreferences() {
+    private void updateTextFromSharedPreferences() {
         TextView textView = findViewById(R.id.textHighscore);
-        String str = "";
+        StringBuilder str = new StringBuilder();
         if(!sharedPreferences.contains("name0")) {
             resetHighscore();
         }
         for(int i=0;i<5;i++) {
-            str = str + sharedPreferences.getString("name"+i,"default") + " - " + sharedPreferences.getInt("score"+i,0) + "\n";
+            str.append(sharedPreferences.getString("name" + i, "default")).append(" - ").append(sharedPreferences.getInt("score" + i, 0)).append("\n");
         }
-        textView.setText(str);
+        textView.setText(str.toString());
     }
 
     public void resetHighscore(View view) {
         resetHighscore();
     }
 
-    public void resetHighscore() {
+    private void resetHighscore() {
         SharedPreferences.Editor e = sharedPreferences.edit();
         e.putString("name0", "Robb");
         e.putString("name1", "Sansa");

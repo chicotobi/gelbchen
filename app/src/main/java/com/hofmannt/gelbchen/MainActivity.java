@@ -13,9 +13,9 @@ import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    SharedPreferences sp;
-    String username;
-    int level;
+    private SharedPreferences sp;
+    private String username;
+    private int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +37,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int selectedId = radioGroup.getCheckedRadioButtonId();
         RadioButton radioButton = findViewById(selectedId);
         String text = (String) radioButton.getText();
-        if (text.equals("Easy")) {
-            level = 1;
-        } else if (text.equals("Moderate")) {
-            level = 2;
-        } else if (text.equals("Hard")) {
-            level = 3;
+        switch (text) {
+            case "Easy":
+                level = 1;
+                break;
+            case "Moderate":
+                level = 2;
+                break;
+            case "Hard":
+                level = 3;
+                break;
         }
 
         SharedPreferences.Editor e = sp.edit();
