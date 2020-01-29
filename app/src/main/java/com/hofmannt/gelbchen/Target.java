@@ -50,11 +50,10 @@ public class Target {
         good_sound = soundPool.load(this.context, R.raw.sound_1, 1);
         bad_sound = soundPool.load(this.context, R.raw.sound_2, 1);
 
-
-        Bitmap p1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
-        Bitmap p2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
-        Bitmap p3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gelbchen);
-        Bitmap m1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
+        Bitmap p1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_good);
+        Bitmap p2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_good);
+        Bitmap p3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_good);
+        Bitmap m1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_bad);
         if(!classic) {
             if(level==1) {
                 p1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.forest_trash_1);

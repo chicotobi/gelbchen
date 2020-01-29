@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gelbchen_background"
+    android:background="@drawable/background_forest"
     tools:context="com.hofmannt.gelbchen.MainActivity">
 
     <TextView
@@ -14,10 +14,11 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:lineSpacingExtra="10sp"
-        android:text="Gelbchen"
+        android:text="Green and Clean"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/classic_switch"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +34,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Tobi"
+        android:textColor="#FFFFFF"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -46,6 +48,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:text="Your Name:"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
         app:layout_constraintEnd_toStartOf="@+id/name"
@@ -70,16 +73,16 @@
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClickHighscore"
         android:text="Highscore"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/classic_switch"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
@@ -101,25 +104,36 @@
             android:id="@+id/easy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy"/>
+            android:text="Easy"
+            android:textColor="#FFFFFF"/>
+
         <RadioButton
             android:id="@+id/moderate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Moderate" />
+            android:text="Moderate"
+            android:textColor="#FFFFFF" />
+
         <RadioButton
             android:id="@+id/hard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hard"/>
+            android:text="Hard"
+            android:textColor="#FFFFFF"/>
     </RadioGroup>
 
     <Switch
         android:id="@+id/classic_switch"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
         android:text="Classic-Mode"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/button2" />
 </android.support.constraint.ConstraintLayout>
