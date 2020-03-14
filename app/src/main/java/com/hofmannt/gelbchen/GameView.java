@@ -182,30 +182,32 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 canvas.drawText("Name:" + username + "  Score: " + points + "  Time: " + time/FRAMES, 0, 40, paint);
                 canvas.drawLine(0, 50, 500, 50, paint);
-                if (bin_wiggle_counter > 0) {
-                    bin_wiggle_counter--;
-                    Matrix matrix = new Matrix();
+                if (!classic) {
+                    if (bin_wiggle_counter > 0) {
+                        bin_wiggle_counter--;
+                        Matrix matrix = new Matrix();
 
-                    float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+                        float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
 
-                    matrix.setTranslate(bin_green.getWidth(), bin_green.getHeight());
-                    matrix.postRotate(degrees[bin_wiggle_counter], bin_green.getWidth(), bin_green.getHeight());
-                    Bitmap rotated_bin = Bitmap.createBitmap(bin_green, 0, 0, bin_green.getWidth(), bin_green.getHeight(), matrix, true);
-                    Bitmap rescaled_bin = Bitmap.createScaledBitmap(rotated_bin, shiftX, shiftY, false);
-                    canvas.drawBitmap(rescaled_bin, bin_x, bin_y, paint);
-                } else if (bin_wiggle_counter < 0) {
-                    bin_wiggle_counter++;
-                    Matrix matrix = new Matrix();
+                        matrix.setTranslate(bin_green.getWidth(), bin_green.getHeight());
+                        matrix.postRotate(degrees[bin_wiggle_counter], bin_green.getWidth(), bin_green.getHeight());
+                        Bitmap rotated_bin = Bitmap.createBitmap(bin_green, 0, 0, bin_green.getWidth(), bin_green.getHeight(), matrix, true);
+                        Bitmap rescaled_bin = Bitmap.createScaledBitmap(rotated_bin, shiftX, shiftY, false);
+                        canvas.drawBitmap(rescaled_bin, bin_x, bin_y, paint);
+                    } else if (bin_wiggle_counter < 0) {
+                        bin_wiggle_counter++;
+                        Matrix matrix = new Matrix();
 
-                    float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
+                        float[] degrees = {355, 350, 345, 350, 355, 0, 5, 10, 15, 20};
 
-                    matrix.setTranslate(bin_red.getWidth(), bin_red.getHeight());
-                    matrix.postRotate(degrees[-bin_wiggle_counter], bin_red.getWidth(), bin_red.getHeight());
-                    Bitmap rotated_bin = Bitmap.createBitmap(bin_red, 0, 0, bin_red.getWidth(), bin_red.getHeight(), matrix, true);
-                    Bitmap rescaled_bin = Bitmap.createScaledBitmap(rotated_bin, shiftX, shiftY, false);
-                    canvas.drawBitmap(rescaled_bin, bin_x, bin_y, paint);
-                } else {
-                    canvas.drawBitmap(bin_green, bin_x, bin_y, paint);
+                        matrix.setTranslate(bin_red.getWidth(), bin_red.getHeight());
+                        matrix.postRotate(degrees[-bin_wiggle_counter], bin_red.getWidth(), bin_red.getHeight());
+                        Bitmap rotated_bin = Bitmap.createBitmap(bin_red, 0, 0, bin_red.getWidth(), bin_red.getHeight(), matrix, true);
+                        Bitmap rescaled_bin = Bitmap.createScaledBitmap(rotated_bin, shiftX, shiftY, false);
+                        canvas.drawBitmap(rescaled_bin, bin_x, bin_y, paint);
+                    } else {
+                        canvas.drawBitmap(bin_green, bin_x, bin_y, paint);
+                    }
                 }
             } else {
                 paint.setTextSize(60);

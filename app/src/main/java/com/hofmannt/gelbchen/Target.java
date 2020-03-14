@@ -40,8 +40,11 @@ class Target {
 
     private final int targetCount;
 
+    private boolean classic;
+
     public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean classic) {
 
+        this.classic = classic;
         this.targetCount = targetCount;
         nx = level + 2;
         ny = level + 3;
@@ -154,7 +157,7 @@ class Target {
                 if(newx == x[j] && newy == y[j]) {
                     collision = true;
                 }
-                if(idx_x == 0 && idx_y == ny - 1) {
+                if (!classic && idx_x == 0 && idx_y == ny - 1) {
                     collision = true;
                 }
             }
