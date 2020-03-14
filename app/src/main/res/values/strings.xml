@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Green&amp;Clean</string>
+    <string name="green_and_clean">Green&amp;Clean</string>
+    <string name="default_name">Tobi</string>
+    <string name="your_name">Your Name:</string>
+    <string name="start_game">Start game</string>
+    <string name="highscore">Highscore</string>
+    <string name="easy">Easy</string>
+    <string name="moderate">Moderate</string>
+    <string name="hard">Hard</string>
+    <string name="classic_mode">Classic-Mode</string>
+    <string name="reset_highscore">Reset highscore</string>
 </resources>

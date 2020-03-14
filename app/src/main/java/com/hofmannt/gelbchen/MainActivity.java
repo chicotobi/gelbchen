@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private String username;
@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level = sp.getInt("level",1);
     }
 
-    @Override
-    public void onClick(View view) {
+    public void onClickStart(View view) {
         EditText editText = findViewById(R.id.name);
         username = editText.getText().toString();
 
