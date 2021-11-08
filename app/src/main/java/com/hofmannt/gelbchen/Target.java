@@ -40,7 +40,7 @@ class Target {
 
     private final int targetCount;
 
-    private boolean classic;
+    private final boolean classic;
 
     public Target(Context context, int targetCount, int screenX, int screenY, int level, Boolean classic) {
 
